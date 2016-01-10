@@ -9,12 +9,14 @@ library(lubridate)
 ## Get zip file from provided location & extract the full data set
 zipURL = "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
 temp <- tempfile()
+cat("Loading data...", "\n")
 download.file(zipURL,temp)
 consumptionData <- read.table(unz(temp, "household_power_consumption.txt"), sep = ";", header = TRUE,
                               comment.char = "", na.strings = "?",
                               colClasses = c("character", "character", "numeric", "numeric", 
                                              "numeric", "numeric", "numeric", "numeric", "numeric"))
 unlink(temp)
+cat("Data load complete...", "\n")
 
 ## Prep for data processing and extract the data for the requested data range
 consumptionData <- mutate(consumptionData, DateTime = parse_date_time(paste(Date, Time), "dmY hms"))
@@ -34,4 +36,5 @@ legend("topright", lty = c(1, 1, 1), col = c("black", "red", "blue"),
 # Note: used y.intersp = 0.4 when plotting to screen as the legend was taking too large space of the topright of the graph.
 # However, when I save this plot to png, the legend appeared to small and I had to remove this parameter.
 dev.off()
+cat("Plot complete and can be found in working directory:", getwd(), "\n", "File name is plot3.png.")
 
